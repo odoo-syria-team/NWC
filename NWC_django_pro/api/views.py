@@ -459,9 +459,9 @@ class PartnersApiView(APIView):
         check_img=lambda x:request.build_absolute_uri(x['image']) if x['image'] else "" 
         check__loc_img_=lambda x:request.build_absolute_uri(x.locaction_image.url) if x.locaction_image else "" 
         
-        for item in services:
-            result.append({
-                "en":{
+        # for item in services:
+        #     result.append({
+        result={"partnersData":{"en":[{
                     "title":item.title_en,
                     "partnerData": [
                         {
@@ -469,8 +469,8 @@ class PartnersApiView(APIView):
                         "vendors": [{'title':partner.get('title_en'),'logo':check_img(partner)} for partner in ListServiceDetailsSerializer(service_item, many=False).data.get('partners')],
                         }
                     for service_item in ListServiceDetails.objects.all().filter(service_id=item.id)]
-                },
-                "ar":{
+            }for item in services],
+            "ar":[{
                     "title":item.title_ar,
                     "partnerData": [
                         {
@@ -478,8 +478,18 @@ class PartnersApiView(APIView):
                         "vendors": [{'title':partner.get('title_ar'),'logo':check_img(partner)} for partner in ListServiceDetailsSerializer(service_item, many=False).data.get('partners')],
                         }
                     for service_item in ListServiceDetails.objects.all().filter(service_id=item.id)]
-                }
-            })
+            }for item in services]}}
+            
+                # "ar":{
+                #     "title":item.title_ar,
+                #     "partnerData": [
+                #         {
+                #         "subTitle": service_item.title_ar,
+                #         "vendors": [{'title':partner.get('title_ar'),'logo':check_img(partner)} for partner in ListServiceDetailsSerializer(service_item, many=False).data.get('partners')],
+                #         }
+                #     for service_item in ListServiceDetails.objects.all().filter(service_id=item.id)]
+                # }
+        #     })
         return Response(result)
 
 
