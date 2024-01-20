@@ -76,55 +76,92 @@ class ServiceItemApiView(APIView):
 
 class ServiceApiView(APIView):
     def get(self, request):
-        service = OurServicesPage.objects.all().filter(show_in_service_page=True)
+        service = OurServicesPage.objects.filter(show_in_service_page=True).first()
         print('service',service)
-        serializer = OurServicesPageSerializer(service, many=True, context={'request': request})
-       
+        serializer = OurServicesPageSerializer(service, many=False, context={'request': request})
+        print(serializer,serializer.data)
         
         f=serializer.data  
-        
-        result=[]
+        # print(f)
+        # result=[]
         check_img_=lambda x:request.build_absolute_uri(x.image.url) if x.image else ""  
         check_img_ar=lambda x:request.build_absolute_uri(x.image_ar.url) if x.image_ar else ""  
-        check_img=lambda x:request.build_absolute_uri(x['image']) if x['image'] else "" 
-        for item in service:
-            result.append({
-                'en':{
-                    'titel':item.title_en,
-                    'text':item.text_en,
+        check_img=lambda x:request.build_absolute_uri(x['image']) if x['image'] else ""
+        # # print("servicer",service.title_en)
+        # # for item in service:
+        # #     result.append({
+        # # result={"partnersData":{"en":[],"ar":[] } 
+        
+        if service:
+            result={"services":{"en":{
                     
-                    "servicesData":[{
-                        "title":service_item.title_en,
-                        'image':check_img_(service_item),
-                        "slug":service_item.slug,
-                        'list':[{
-                            'title':li.title_en
-                        }for li in ListServiceDetails.objects.all().filter(service_id=service_item.id)],
-                        
-                    } for service_item in Service.objects.all().filter(show_in_service_page=True)]
-                },
-                'ar':{
-                    'titel':item.title_ar,
-                    'text':item.text_ar,
-                    
-                    "servicesData":[{
-                        "title":service_item.title_ar,
-                        'image':check_img_ar(service_item),
-                        "slug":service_item.slug,
-                        'list':[{
-                            'title':li.title_ar
-                        }for li in ListServiceDetails.objects.all().filter(service_id=service_item.id)],
-                       
-                    } for service_item in Service.objects.all().filter(show_in_service_page=True)]
-                }
-                
-            })
+                                    'titel':service.title_en,
+                                    'text':service.text_en,
+                                    
+                                    "servicesData":[{
+                                        "title":service_item.title_en,
+                                        'image':check_img_(service_item),
+                                        "slug":service_item.slug,
+                                        'list':[
+                                            li.title_en
+                                        for li in ListServiceDetails.objects.all().filter(service_id=service_item.id)],
+                                        # 'list':[{
+                                        #     'title':li.title_en
+                                        # }for li in ListServiceDetails.objects.all().filter(service_id=service_item.id)],
+                                        
+                                    } for service_item in Service.objects.all().filter(show_in_service_page=True)]
+                            },
+                                
+                            "ar":{
+                                    "title":service.title_ar,
+                                    "text":service.text_ar,
+                                    "servicesData":[{
+                                        "title":service_item.title_ar,
+                                        'image':check_img_(service_item),
+                                        "slug":service_item.slug,
+                                        'list':[
+                                            li.title_ar
+                                        for li in ListServiceDetails.objects.all().filter(service_id=service_item.id)],
+                                        # 'list':[{
+                                        #     'title':li.title_en
+                                        # }for li in ListServiceDetails.objects.all().filter(service_id=service_item.id)],
+                                        
+                                    } for service_item in Service.objects.all().filter(show_in_service_page=True)]
+                                }
 
-        if service:    
-            return Response(result)
+            } 
+            }
         else:
+            result={"services":{"en":{'titel':"",
+                                    'text':"",
+                                    
+                                    "servicesData":[]},
+                                "ar":{'titel':"",
+                                    'text':"",
+                                    
+                                    "servicesData":[]}}}  
+        #     #     'ar':{
+        #     #         'titel':item.title_ar,
+        #     #         'text':item.text_ar,
+                    
+        #     #         "servicesData":[{
+        #     #             "title":service_item.title_ar,
+        #     #             'image':check_img_ar(service_item),
+        #     #             "slug":service_item.slug,
+        #     #             'list':[{
+        #     #                 'title':li.title_ar
+        #     #             }for li in ListServiceDetails.objects.all().filter(service_id=service_item.id)],
+                       
+        #     #         } for service_item in Service.objects.all().filter(show_in_service_page=True)]
+        #     #     }
+                
+        #     # })
+
+        # if service:    
+        return Response(result)
+        # else:
            
-            return Response([])
+        #     return Response([])
                          
 
     
