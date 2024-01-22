@@ -197,7 +197,8 @@ class ContactUS(models.Model):
     mobile_number=models.CharField(max_length=255,blank=True,default="",verbose_name=u"رقم الموبايل / Phone number ")
     email=models.EmailField(max_length=255,blank=True,default="",verbose_name=u"البريد الاكتروني / Email ")
     image=models.ImageField(upload_to='images/',blank=True,verbose_name=u"الصورة / image ")
-    locaction_image=models.ImageField(upload_to='images/',blank=True,verbose_name=u"صورة للموقع على الخريطة / Map in location ")
+    # locaction_image=models.ImageField(upload_to='images/',blank=True,verbose_name=u"صورة للموقع على الخريطة / Map in location ")
+    locaction_url=models.CharField(max_length=255,blank=True,default="",verbose_name=u"Location url")
     # form_id = models.ManyToManyField(ContactUSForm, blank=True,verbose_name=u" ")
     
     def __str__(self):

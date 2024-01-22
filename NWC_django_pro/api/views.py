@@ -41,7 +41,7 @@ class ServiceItemApiView(APIView):
                                     {
                                     "title": li.title_en,
                                     "image": check_img_(li),
-                                    
+                                    "text":li.text_en,
                                     "vendor":[{
                                         "name":vendor.get('title_en'),
                                         
@@ -58,6 +58,7 @@ class ServiceItemApiView(APIView):
                                     {
                                     "title": li.title_ar,
                                     "image": check_img_(li),
+                                    "text":li.text_ar,
                                     "vendor":[{
                                         "name":vendor.get('title_ar'),
                                         
@@ -370,7 +371,11 @@ class HomePageApiView(APIView):
                                 }for item in hero],
                     "servicesData":[{
                         'title':item.title_en,
-                        'image':check_img_(item)
+                        'image':check_img_(item),
+                        "slug":item.slug,
+                        'list':[
+                            li.title_en
+                        for li in ListServiceDetails.objects.all().filter(service_id=item.id)]
                                 }for item in service],
                     # "AboutUsHero":get_about_hero_en(homepage.about_hero_id),
                     "AboutUsHero":get_about_hero_en(homepage),
@@ -391,7 +396,11 @@ class HomePageApiView(APIView):
                                 }for item in hero],
                     "servicesData":[{
                         'title':item.title_ar,
-                        'image':check_img_ar(item)
+                        'image':check_img_ar(item),
+                        "slug":item.slug,
+                        'list':[
+                            li.title_ar
+                        for li in ListServiceDetails.objects.all().filter(service_id=item.id)]
                                 }for item in service],
                     # "AboutUsHero":get_about_hero_ar(homepage.about_hero_id),
                     "AboutUsHero":get_about_hero_en(homepage),
@@ -427,7 +436,8 @@ class ContactUSApiView(APIView):
                     "mobile_number":contact_us.mobile_number,
                     "email":contact_us.email,
                     "image":check_img_(contact_us),
-                    "locaction_image":check__loc_img_(contact_us)
+                    # "locaction_image":check__loc_img_(contact_us)
+                    "locaction_url":contact_us.locaction_url
                 },
                 "ar":{
                     "company":contact_us.company_name_ar,
@@ -435,7 +445,8 @@ class ContactUSApiView(APIView):
                     "mobile_number":contact_us.mobile_number,
                     "email":contact_us.email,
                     "image":check_img_(contact_us),
-                    "locaction_image":check__loc_img_(contact_us)
+                    # "locaction_image":check__loc_img_(contact_us)
+                    "locaction_url":contact_us.locaction_url
                 }
                 
             }
