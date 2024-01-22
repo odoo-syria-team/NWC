@@ -1,8 +1,8 @@
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Hero,OurParnters,Values,OurServicesPage,AboutUS,HomePage,Service,ContactUS,ContactUSForm,Partners,ListServiceDetails,Partners
-from .serializers import HeroSerializer,OurParntersSerializer,ValuesSerializer,OurServicesPageSerializer,AboutUSSerializer,HomePageSerializer,ServiceSerializer,ContactUSSerializer,ContactUSFormSerializer,PartnersSerializer,ListServiceDetailsSerializer,PartnerSerializer
+from .models import Hero,Values,OurServicesPage,AboutUS,HomePage,Service,ContactUS,ContactUSForm,Partners,ListServiceDetails,Partners
+from .serializers import HeroSerializer,ValuesSerializer,OurServicesPageSerializer,AboutUSSerializer,HomePageSerializer,ServiceSerializer,ContactUSSerializer,ContactUSFormSerializer,PartnersSerializer,ListServiceDetailsSerializer,PartnerSerializer
 from rest_framework import status
 class HeroListAPIView(APIView):
     def get(self, request):
@@ -82,15 +82,9 @@ class ServiceApiView(APIView):
         print(serializer,serializer.data)
         
         f=serializer.data  
-        # print(f)
-        # result=[]
         check_img_=lambda x:request.build_absolute_uri(x.image.url) if x.image else ""  
         check_img_ar=lambda x:request.build_absolute_uri(x.image_ar.url) if x.image_ar else ""  
         check_img=lambda x:request.build_absolute_uri(x['image']) if x['image'] else ""
-        # # print("servicer",service.title_en)
-        # # for item in service:
-        # #     result.append({
-        # # result={"partnersData":{"en":[],"ar":[] } 
         
         if service:
             result={"services":{"en":{
@@ -122,9 +116,6 @@ class ServiceApiView(APIView):
                                         'list':[
                                             li.title_ar
                                         for li in ListServiceDetails.objects.all().filter(service_id=service_item.id)],
-                                        # 'list':[{
-                                        #     'title':li.title_en
-                                        # }for li in ListServiceDetails.objects.all().filter(service_id=service_item.id)],
                                         
                                     } for service_item in Service.objects.all().filter(show_in_service_page=True)]
                                 }
@@ -140,28 +131,9 @@ class ServiceApiView(APIView):
                                     'text':"",
                                     
                                     "servicesData":[]}}}  
-        #     #     'ar':{
-        #     #         'titel':item.title_ar,
-        #     #         'text':item.text_ar,
-                    
-        #     #         "servicesData":[{
-        #     #             "title":service_item.title_ar,
-        #     #             'image':check_img_ar(service_item),
-        #     #             "slug":service_item.slug,
-        #     #             'list':[{
-        #     #                 'title':li.title_ar
-        #     #             }for li in ListServiceDetails.objects.all().filter(service_id=service_item.id)],
-                       
-        #     #         } for service_item in Service.objects.all().filter(show_in_service_page=True)]
-        #     #     }
-                
-        #     # })
-
-        # if service:    
+          
         return Response(result)
-        # else:
-           
-        #     return Response([])
+        
                          
 
     
@@ -170,10 +142,10 @@ class AboutUSApiView(APIView):
         result=[]
         
         aboutus=AboutUS.objects.filter(active=True).first()
-        print("aboutus",aboutus)
+        
         serializer = AboutUSSerializer(aboutus, many=False, context={'request': request})
         partners=Partners.objects.all()
-        print("partners",partners)
+        
         
         check_img_=lambda x:request.build_absolute_uri(x.image_our_vision.url) if x.image_our_vision else ""  
         check_img_ar=lambda x:request.build_absolute_uri(x.image_our_vision_ar.url) if x.image_our_vision_ar else "" 
@@ -181,7 +153,9 @@ class AboutUSApiView(APIView):
         check_logo=lambda x:request.build_absolute_uri(x.logo.url) if x.logo else "" 
         check_image_hero_en=lambda x:request.build_absolute_uri(x.image_hero.url) if x.image_hero else "" 
         check_image_hero_ar=lambda x:request.build_absolute_uri(x.image_hero_ar.url) if x.image_hero_ar else "" 
-        print(serializer.data)
+        check_img_parent=lambda x:request.build_absolute_uri(x.image_parent.url) if x.image_parent else "" 
+        check_logo_parent=lambda x:request.build_absolute_uri(x.logo_parent.url) if x.logo_parent else "" 
+        
         
         def get_values_en(value):
             if value:
@@ -231,11 +205,11 @@ class AboutUSApiView(APIView):
         def get_ourParnters_en(value):
             if value:
                 return {
-                    "title":value.title_en ,
-                    "subTitle": value.subTitle_en,
-                    "text": value.text_en,
-                    "image": check_img(value),
-                    "logo": check_logo(value)
+                    "title":value.title_parent_en ,
+                    "subTitle": value.subTitle_parent_en,
+                    "text": value.text_parent_en,
+                    "image": check_img_parent(value),
+                    "logo": check_logo_parent(value)
                     }
             else:
                 return {
@@ -248,11 +222,11 @@ class AboutUSApiView(APIView):
         def get_ourParnters_ar(value):
             if value:
                 return {
-                    "title":value.title_ar ,
-                    "subTitle": value.subTitle_ar,
-                    "text": value.text_ar,
-                    "image": check_img(value),
-                    "logo": check_logo(value)
+                    "title":value.title_parent_ar ,
+                    "subTitle": value.subTitle_parent_ar,
+                    "text": value.text_parent_ar,
+                    "image": check_img_parent(value),
+                    "logo": check_logo_parent(value)
                     }
             else:
                 return {
@@ -297,8 +271,7 @@ class AboutUSApiView(APIView):
             
         
         def get_our_partner_ar(value):  
-            # data={}
-            # if value:
+            
             data= {
                 "title": value.title_our_partner_ar,
                 "subtitle":  value.sub_title_our_partner_ar,
@@ -322,7 +295,7 @@ class AboutUSApiView(APIView):
                     'aboutus':aboutus.aboutus_en,
                     "hero": get_hero_en(aboutus),
                     "values":get_values_en(aboutus),
-                    "ourParents":get_ourParnters_en(aboutus.ourParnters_id),
+                    "ourParents":get_ourParnters_en(aboutus),
                     "ourPartnersLogo":get_our_partner_en(aboutus)
                     
                 },
@@ -330,7 +303,7 @@ class AboutUSApiView(APIView):
                     'aboutus':aboutus.aboutus_ar,
                     "hero":get_hero_ar(aboutus),
                     "values": get_values_ar(aboutus),
-                    "ourParents":get_ourParnters_ar(aboutus.ourParnters_id),
+                    "ourParents":get_ourParnters_ar(aboutus),
                     "ourPartnersLogo":get_our_partner_ar(aboutus)
                 
             }}
@@ -399,7 +372,8 @@ class HomePageApiView(APIView):
                         'title':item.title_en,
                         'image':check_img_(item)
                                 }for item in service],
-                    "AboutUsHero":get_about_hero_en(homepage.about_hero_id),
+                    # "AboutUsHero":get_about_hero_en(homepage.about_hero_id),
+                    "AboutUsHero":get_about_hero_en(homepage),
                     "ourPartnersLogo": {
                         "title": homepage.ourPartners_title_en,
                         "subTitle": homepage.ourPartners_subtitle_en,
@@ -419,7 +393,8 @@ class HomePageApiView(APIView):
                         'title':item.title_ar,
                         'image':check_img_ar(item)
                                 }for item in service],
-                    "AboutUsHero":get_about_hero_ar(homepage.about_hero_id),
+                    # "AboutUsHero":get_about_hero_ar(homepage.about_hero_id),
+                    "AboutUsHero":get_about_hero_en(homepage),
                     "ourPartnersLogo": {
                         "title": homepage.ourPartners_title_ar,
                         "subTitle": homepage.ourPartners_subtitle_ar,
@@ -488,16 +463,13 @@ class PartnersApiView(APIView):
         serializer = ServiceSerializer(services, many=True, context={'request': request})
         print('serializer',serializer.data)
         f=serializer.data
-        # print(ServiceItem.objects.all())
-        # for p in ServiceItem.objects.all():
-        #     print(p.service_id)
+        
           
         check_img_=lambda x:request.build_absolute_uri(x.image.url) if x.image else "" 
         check_img=lambda x:request.build_absolute_uri(x['image']) if x['image'] else "" 
         check__loc_img_=lambda x:request.build_absolute_uri(x.locaction_image.url) if x.locaction_image else "" 
         
-        # for item in services:
-        #     result.append({
+        
         result={"partnersData":{"en":[{
                     "title":item.title_en,
                     "partnerData": [
@@ -517,16 +489,7 @@ class PartnersApiView(APIView):
                     for service_item in ListServiceDetails.objects.all().filter(service_id=item.id)]
             }for item in services]}}
             
-                # "ar":{
-                #     "title":item.title_ar,
-                #     "partnerData": [
-                #         {
-                #         "subTitle": service_item.title_ar,
-                #         "vendors": [{'title':partner.get('title_ar'),'logo':check_img(partner)} for partner in ListServiceDetailsSerializer(service_item, many=False).data.get('partners')],
-                #         }
-                #     for service_item in ListServiceDetails.objects.all().filter(service_id=item.id)]
-                # }
-        #     })
+               
         return Response(result)
 
 
