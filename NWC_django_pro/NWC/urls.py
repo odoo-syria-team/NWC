@@ -20,8 +20,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 # from api.admin import custom_admin_site
 urlpatterns = [
-    path('', include('admin_material.urls')),
+    # path('', include('admin_material.urls')),
     path('admin/', admin.site.urls),
     # path('admin/', custom_admin_site.urls),
     path('apis/', include('api.urls')),
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

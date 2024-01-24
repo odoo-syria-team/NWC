@@ -2,6 +2,8 @@ from django.contrib import admin
 # from django.contrib.admin import AdminSite
 # from .models import Hero,Values,OurParnters,AboutUS,Service,OurServicesPage,HomePage,AboutUsHero,Partners,ContactUS,ContactUSForm,ListServiceDetails
 from .models import Hero,Values,AboutUS,Service,OurServicesPage,HomePage,Partners,ContactUS,ContactUSForm,ListServiceDetails
+admin.site.site_header = "NWC"
+
 # Register your models here.
 
 # from django.utils.text import capfirst

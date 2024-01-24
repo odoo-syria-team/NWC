@@ -31,13 +31,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'admin_material.apps.AdminMaterialDashboardConfig',
+    # 'admin_material.apps.AdminMaterialDashboardConfig',
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'corsheaders',
     'rest_framework',
     'api',
     'images',
@@ -48,6 +50,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     # 'corsheaders.middleware.CorsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -56,12 +59,13 @@ MIDDLEWARE = [
 ]
 
 # CORS_ORIGIN_ALLOW_ALL = True
-
+CORS_ALLOW_ALL_ORIGINS =True
 ROOT_URLCONF = 'NWC.urls'
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        # 'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'DIRS': [],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -125,6 +129,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# STATICFILES_DIR=[
+#     os.path.join(BASE_DIR, 'static')
+# ]
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
@@ -135,4 +142,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'images')
 
 LOGIN_REDIRECT_URL = '/'
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+JAZZMIN_SETTINGS = {
+    "site_title": "NWC",
+    # "site_header": "NWC",
+    # "site_logo": "img/logo.png",
+    # Other Jazzmin settings...
+}
+# ADMIN_LOGO = 'img/logo.jpg'
