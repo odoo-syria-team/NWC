@@ -403,7 +403,7 @@ class HomePageApiView(APIView):
                         for li in ListServiceDetails.objects.all().filter(service_id=item.id)]
                                 }for item in service],
                     # "AboutUsHero":get_about_hero_ar(homepage.about_hero_id),
-                    "AboutUsHero":get_about_hero_en(homepage),
+                    "AboutUsHero":get_about_hero_ar(homepage),
                     "ourPartnersLogo": {
                         "title": homepage.ourPartners_title_ar,
                         "subTitle": homepage.ourPartners_subtitle_ar,
