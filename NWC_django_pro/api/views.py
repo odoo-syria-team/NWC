@@ -35,7 +35,7 @@ class ServiceItemApiView(APIView):
            
             data={"servicesDetailed":{
                 "en":{
-                    "title:": service_obj.title_en,
+                    "title": service_obj.title_en,
                     "image": check_img_(service_obj),
                     "servicesData": [
                                     {
@@ -52,7 +52,7 @@ class ServiceItemApiView(APIView):
                    
                 },
                 "ar":{
-                    "title:": service_obj.title_ar,
+                    "title": service_obj.title_ar,
                     "image": check_img_ar(service_obj),
                     "servicesData": [
                                     {
@@ -381,7 +381,7 @@ class HomePageApiView(APIView):
                     "AboutUsHero":get_about_hero_en(homepage),
                     "ourPartnersLogo": {
                         "title": homepage.ourPartners_title_en,
-                        "subTitle": homepage.ourPartners_subtitle_en,
+                        "subtitle": homepage.ourPartners_subtitle_en,
                         "logoData": [check_img_(img) for img in partners]
                     }                     
                     
@@ -406,7 +406,7 @@ class HomePageApiView(APIView):
                     "AboutUsHero":get_about_hero_ar(homepage),
                     "ourPartnersLogo": {
                         "title": homepage.ourPartners_title_ar,
-                        "subTitle": homepage.ourPartners_subtitle_ar,
+                        "subtitle": homepage.ourPartners_subtitle_ar,
                         "logoData": [check_img_(img) for img in partners]
                     }                   
 
@@ -427,6 +427,7 @@ class ContactUSApiView(APIView):
         f=serializer.data
           
         check_img_=lambda x:request.build_absolute_uri(x.image.url) if x.image else "" 
+        check_img_ar=lambda x:request.build_absolute_uri(x.image_ar.url) if x.image_ar else "" 
         check__loc_img_=lambda x:request.build_absolute_uri(x.locaction_image.url) if x.locaction_image else "" 
         if contact_us:
             data={
@@ -444,7 +445,7 @@ class ContactUSApiView(APIView):
                     "locaction":contact_us.locaction_ar,
                     "mobile_number":contact_us.mobile_number,
                     "email":contact_us.email,
-                    "image":check_img_(contact_us),
+                    "image":check_img_ar(contact_us),
                     # "locaction_image":check__loc_img_(contact_us)
                     "locaction_url":contact_us.locaction_url
                 }
