@@ -24,6 +24,7 @@ class Values(models.Model):
     
     title_en=models.CharField(max_length=2000,verbose_name=u"Title ")
     title_ar=models.CharField(max_length=2000,blank=True,default="",verbose_name=u"العنوان ")
+    image=models.ImageField(upload_to='images/',blank=True,verbose_name=u"image")
     def __str__(self):
         return self.title_en
 
@@ -166,8 +167,8 @@ class HomePage(models.Model):
     subtitle_ar=models.CharField(max_length=2000,blank=True,default="",verbose_name=u"العنوان الفرعي في القائمة الرئيسية ")
     text_en=models.CharField(max_length=2000,blank=True,default="",verbose_name=u"Text in hero section ")
     text_ar=models.CharField(max_length=2000,blank=True,default="",verbose_name=u"النص في القائمة الرئيسية ")
-    image=models.ImageField(upload_to='images/',blank=True,verbose_name=u"image in hero section ")
-    
+    image=models.ImageField(upload_to='images/',blank=True,verbose_name=u"image in about us section ")
+    image_ar=models.ImageField(upload_to='images/',blank=True,verbose_name=u"الصورة في مقطع حولنا")
     # def __str__(self):
     #     return self.title_en
     def image_tag(self):

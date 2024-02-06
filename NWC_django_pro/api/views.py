@@ -90,7 +90,7 @@ class ServiceApiView(APIView):
         if service:
             result={"services":{"en":{
                     
-                                    'titel':service.title_en,
+                                    'title':service.title_en,
                                     'text':service.text_en,
                                     
                                     "servicesData":[{
@@ -112,7 +112,7 @@ class ServiceApiView(APIView):
                                     "text":service.text_ar,
                                     "servicesData":[{
                                         "title":service_item.title_ar,
-                                        'image':check_img_(service_item),
+                                        'image':check_img_ar(service_item),
                                         "slug":service_item.slug,
                                         'list':[
                                             li.title_ar
@@ -124,11 +124,11 @@ class ServiceApiView(APIView):
             } 
             }
         else:
-            result={"services":{"en":{'titel':"",
+            result={"services":{"en":{'title':"",
                                     'text':"",
                                     
                                     "servicesData":[]},
-                                "ar":{'titel':"",
+                                "ar":{'title':"",
                                     'text':"",
                                     
                                     "servicesData":[]}}}  
@@ -167,7 +167,7 @@ class AboutUSApiView(APIView):
                     "image":check_img_(value),
                     "list": {
                         "title": value.title_our_values_en,
-                        "listData": [li.title_en for li in Values.objects.all()]
+                        "listData": [{"image":check_img(li),"text":li.title_en} for li in Values.objects.all()]
                         }
                     }
             else:
@@ -189,7 +189,7 @@ class AboutUSApiView(APIView):
                     "image":check_img_ar(value),
                     "list": {
                         "title": value.title_our_values_ar,
-                        "listData": [li.title_ar for li in Values.objects.all()]
+                        "listData": [{"image":check_img(li),"text":li.title_ar} for li in Values.objects.all()]
                         }
                     }
             else:
@@ -350,7 +350,7 @@ class HomePageApiView(APIView):
                     "subtitle":  value.subtitle_ar,
                     "text": value.text_ar,
                    
-                    "image":check_img_(value)
+                    "image":check_img_ar(value)
                     }
             else:
                 return {
